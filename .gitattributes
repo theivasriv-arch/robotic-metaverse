@@ -1,2 +1,77 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Member 3 Testing - Assembly Module</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #111; }
+        #info { position: absolute; top: 10px; left: 10px; color: white; font-family: sans-serif; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h3>Member 3 Test Workspace</h3>
+        <p>Click and drag the red cube to the target snap point (green wireframe).</p>
+    </div>
+
+    <!-- Include Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Include your assembly module -->
+    <script src="/js/assembly.js"></script>
+
+    <script>
+        // Basic Scene Setup for Independent Testing
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2, 5);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 10, 7);
+        scene.add(directionalLight);
+
+        // Create a placeholder interactive component (e.g., a wheel/cube)
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshStandardMaterial({ color: 0xff4444 });
+        const testComponent = new THREE.Mesh(geometry, material);
+        testComponent.position.set(-2, 0, 0);
+        scene.add(testComponent);
+
+        // Create a visual indicator for the target snap point
+        const targetGeo = new THREE.BoxGeometry(1, 1, 1);
+        const targetMat = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+        const targetMarker = new THREE.Mesh(targetGeo, targetMat);
+        targetMarker.position.set(2, 0, 0);
+        scene.add(targetMarker);
+
+        // Array of interactive objects for Member 3's module
+        const interactiveObjects = [testComponent];
+
+        // Initialize Member 3's Assembly Logic
+        initializeAssembly(scene, camera, renderer, interactiveObjects);
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resizing
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
